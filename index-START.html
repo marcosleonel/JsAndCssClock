@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>JS + CSS Clock</title>
 </head>
-<body>
+<body id="app">
 
 
     <div class="clock">
@@ -18,19 +18,23 @@
 
   <style>
     html {
-      background:#018DED url(http://unsplash.it/1500/1000?image=881&blur=50);
-      background-size:cover;
       font-family:'helvetica neue';
       text-align: center;
       font-size: 10px;
     }
 
     body {
+      background:#018DED url(img/day.jpg) center;
+      background-size:cover;
       font-size: 2rem;
       display:flex;
       flex:1;
       min-height: 100vh;
       align-items: center;
+      -webkit-transition: All 10s;
+         -moz-transition: All 10s;
+           -o-transition: All 10s;
+               transtion: All 10s;
     }
 
     .clock {
@@ -69,12 +73,30 @@
          -moz-transform-origin: 100%;
           -ms-transofrm-origin: 100%;
               transform-origin: 100%;
+      -webkit-transition: All 0.5s;
+        -moz-transition: All 0.5s;
+          -o-transition: All 0.5s;
+             transition: All 0.5s;
+      -webkit-transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 0.1);
+         -moz-transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 0.1);
+             -o-trasition-timing-function: cubic-bezier(0., 2.7, 0.58, 0.1);
+              transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 0.1);
     }
 
   </style>
 
   <script>
+    var d = new Date();
+    var dayOrNight = d.getHours();
+    var app = document.getElementById("app");
 
+    console.log(dayOrNight);
+
+    if (dayOrNight >= 18 || dayOrNight < 6) {
+      app.style.background = "url(img/night.jpg) center";
+    } else {
+      app.style.background = "#018DED url(img/day.jpg) center";
+    }
 
   </script>
 </body>
