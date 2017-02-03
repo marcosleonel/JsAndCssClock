@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
-  <title>JS + CSS Clock</title>
+  <title>JS + CSS Clock | Wes Bos VS Leonel</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
 </head>
 <body id="app">
 
   <div class="filter">
+    <div class="date"></div><br>
     <div class="clock">
       <div class="clock-face">
         <div class="hand hour-hand"></div>
         <div class="hand min-hand"></div>
         <div class="hand second-hand"></div>
       </div>
-    </div>
+    </div><br>
+    <div class="digits"></div>
   </div>
 
   <style>
@@ -24,7 +30,7 @@
   }
 
   body {
-    background:#000000 url(img/day.jpg) center;
+    background:#000000; /* url(img/day.jpg) center;*/
     background-size:cover;
     font-size: 2rem;
     min-height: 100vh;
@@ -40,9 +46,42 @@
     background: rgba(0, 0, 0, 0.2);
     height: 100vh;
     width: 100vw;
-    display: flex;
+    display: -webkit-flex;
+    display:    -moz-flex;
+    display:         flex;
+    -webkit-flex-direction: column;
+    -moz-flex-direction: column;
+    flex-direction: column;
     flex: 1;
     align-items: center;
+  }
+
+  .digits {
+    font-family: 'Raleway', sans-serif;
+    font-weight: lighter;
+    font-size: 8rem;
+    color: white;
+    text-align: center;
+    text-shadow:
+    0 0 0 4px rgba(0,0,0,0.5),
+    inset 0 0 0 3px #EFEFEF,
+    inset 0 0 10px black,
+    0 0 10px rgba(0,0,0,0.6);
+    margin-bottom: 30%;
+  }
+
+  .date {
+    font-family: 'Relaway', sans-serif;
+    font-weight: bold;
+    font-size: 4rem;
+    color: white;
+    text-align: center;
+    text-shadow:
+    0 0 0 4px rgba(0,0,0,0.5),
+    inset 0 0 0 3px #EFEFEF,
+    inset 0 0 10px black,
+    0 0 10px rgba(0,0,0,0.6);
+    margin-top: 4rem;
   }
 
   .clock {
@@ -103,6 +142,10 @@
 
     const now = new Date();
 
+    const month = now.getMonth();
+    const day = now.getDate();
+    const year = now.getFullYear();
+
     const seconds = now.getSeconds();
     const minutes = now.getMinutes();
     const hours = now.getHours();
@@ -111,32 +154,70 @@
     const minsDegrees = ((minutes / 60) * 360) + ((seconds/60)*6) + 90;
     const hoursDegrees = ((hours / 12) * 360) + ((minutes/60)*30) + 90;
 
-
-    var app = document.getElementById("app");
-
-    console.log(hours);
+    const app = document.getElementById("app");
+    const digits = document.querySelector('.digits');
+    const date = document.querySelector('.date');
 
     if (hours >= 18 || hours < 6) {
       app.style.background = "#000000 url(img/night.jpg) center";
     } else {
       app.style.background = "#000000 url(img/day.jpg) center";
-    }
+    };
 
-    if (hoursDegrees == 360 || minsDegrees == 360 || secondsDegrees == 360) {
-      hand.style.webkitTransition = "All 0.0s";
+    if (seconds == 0) {
       hand.style.transition = "All 0.0s";
+      minsHand.style.transition = "All 0.0s";
+      secondsHand.style.transition = "All 0.0s";
+      hoursHand.style.transition = "All 0.0s";
     } else {
-      hand.style.webkitTransition = "All 0.5s";
       hand.style.transition = "All 0.5s";
-    }
+      minsHand.style.transition = "All 0.5s";
+      secondsHand.style.transition = "All 0.5s";
+      hoursHand.style.transition = "All 0.5s";
+    };
 
     secondsHand.style.transform = `rotate(${secondsDegrees}deg)`;
     minsHand.style.transform = `rotate(${minsDegrees}deg)`;
     hoursHand.style.transform = `rotate(${hoursDegrees}deg)`;
 
+    //SELECTING THE MONTH NAME TO DISPLAY THE DATE
+    var monthName;
 
-    console.log(seconds);
-  }
+    if (month == 0) {
+      monthName = "February";
+    } else if (month == 2) {
+      monthName = "March";
+    } else if (month == 3) {
+      monthName = "April";
+    } else if (month == 4) {
+      monthName = "May";
+    } else if (month == 5) {
+      monthName = "June";
+    } else if (month == 6) {
+      monthName = "July";
+    } else if (month == 7) {
+      monthName = "August";
+    } else if (month == 8) {
+      monthName = "September";
+    } else if (month == 9) {
+      monthName = "October";
+    } else if (month == 10) {
+      monthName = "November";
+    } else {
+      monthName = "December";
+    };
+
+    date.innerHTML = `${monthName} ${day}, ${year}`;
+
+
+    //DISPLAY THE TIME IN DIGITS
+    if (seconds < 10) {
+      digits.innerHTML = `${hours}  : ${minutes} : 0${seconds}`;
+    } else {
+      digits.innerHTML = `${hours} : ${minutes}  : ${seconds}`;
+    };
+
+  };
 
   setInterval(setDate, 1000);
 
